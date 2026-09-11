@@ -10,6 +10,7 @@ type Props = {
 }
 
 const RenderItems = ({items , index , x}: Props) => {
+    const {width: SCREEN_WIDTH} = useWindowDimensions();
     const cricleAnimation = useAnimatedStyle(() => {
       const scale = interpolate(
         x.value,
@@ -25,16 +26,16 @@ const RenderItems = ({items , index , x}: Props) => {
         transform: [{scale: scale}]
       }
     })
-    const {width: SCREEN_WIDTH} = useWindowDimensions();
   return (
     <View style={[styles.Container , {width: SCREEN_WIDTH}]}>
         <Animated.View style={styles.cricleCointainer }>
-            <View style={[{
+            <Animated.View style={[{
                 width: SCREEN_WIDTH , 
                 height: SCREEN_WIDTH , 
                 backgroundColor: items.bacroundColor , 
                 borderRadius: SCREEN_WIDTH / 2
-                }, cricleAnimation]} />
+                }, cricleAnimation
+                ]} />
         </Animated.View>
         <View>
             <LottieView source={items.animation} 
