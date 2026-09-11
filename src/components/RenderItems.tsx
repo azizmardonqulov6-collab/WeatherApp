@@ -11,6 +11,23 @@ type Props = {
 
 const RenderItems = ({items , index , x}: Props) => {
     const {width: SCREEN_WIDTH} = useWindowDimensions();
+
+    const lotioAnimation = useAnimatedStyle(() => {
+      const translate = interpolate(
+        x.value,
+        [
+            (index - 1) * SCREEN_WIDTH,
+            index * SCREEN_WIDTH,
+            (index + 1) * SCREEN_WIDTH
+        ],
+        [200,0,-200],
+        Extrapolation.CLAMP
+      )
+      return {
+        transform: [{translateY: translate}]
+      }
+    })
+
     const cricleAnimation = useAnimatedStyle(() => {
       const scale = interpolate(
         x.value,
@@ -37,13 +54,13 @@ const RenderItems = ({items , index , x}: Props) => {
                 }, cricleAnimation
                 ]} />
         </Animated.View>
-        <View>
+        <Animated.View style={lotioAnimation}>
             <LottieView source={items.animation} 
                 style={{width: SCREEN_WIDTH * 0.9, height: SCREEN_WIDTH * 0.9}}
                 autoPlay
                 loop
             />
-        </View>
+        </Animated.View>
         <View >
             <Text style={[styles.ItemText , {color: items.textColor}]}>
                 {items.text}
@@ -63,6 +80,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginBottom: 120,
     },
+    
     ItemText : {
         fontSize: 40,
         textAlign: "center",
